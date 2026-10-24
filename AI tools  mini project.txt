@@ -1,0 +1,890 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyMate AI - Study Planner</title>
+
+<style>
+:root {
+  --primary: #5b5ce2;
+  --background: #f5f7ff;
+  --text: #172033;
+  --muted: #68738a;
+  --border: #e5e9f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background: white;
+  padding: 18px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  color: var(--primary);
+  font-size: 22px;
+  font-weight: bold;
+}
+
+nav a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: var(--muted);
+}
+
+main {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.hero {
+  background: linear-gradient(130deg, #5556df, #9293fa);
+  color: white;
+  padding: 35px;
+  border-radius: 20px;
+}
+
+.hero h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  margin-bottom: 10px;
+}
+
+.hero p {
+  line-height: 1.7;
+}
+
+button {
+  background: var(--primary);
+  color: white;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 9px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.hero button {
+  background: white;
+  color: var(--primary);
+}
+
+h2 {
+  margin-top: 30px;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+}
+
+label {
+  display: block;
+  margin: 15px 0 7px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #dfe4f0;
+  border-radius: 8px;
+  background: white;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.input-row input {
+  min-width: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.chip {
+  background: #f0f0ff;
+  color: #4546bb;
+  padding: 7px 9px;
+  border-radius: 7px;
+  font-size: 12px;
+}
+
+.chip button {
+  background: transparent;
+  color: #4546bb;
+  padding: 0 2px;
+}
+
+.two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.notice {
+  background: #fff3e4;
+  color: #8a4e10;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.schedule-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.schedule-header select {
+  width: 110px;
+}
+
+.progress {
+  background: #f5f6fc;
+  padding: 13px;
+  border-radius: 10px;
+  margin: 15px 0;
+  font-size: 13px;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #e1e4f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+}
+
+.task {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.task input {
+  width: 17px;
+  height: 17px;
+}
+
+.task strong {
+  font-size: 13px;
+}
+
+.task-detail {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 5px;
+  line-height: 1.5;
+}
+
+.minutes {
+  background: #f0f0ff;
+  color: #4546bb;
+  padding: 6px;
+  border-radius: 7px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.completed strong {
+  text-decoration: line-through;
+  color: #9299aa;
+}
+
+.tips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.tip {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.tip p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+#message {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--primary);
+}
+
+@media (max-width: 800px) {
+  .layout, .tips {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  nav a {
+    margin: 0 7px;
+    font-size: 13px;
+  }
+
+  .hero, .card {
+    padding: 18px;
+  }
+
+  .schedule-header {
+    flex-wrap: wrap;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✦ StudyMate AI</div>
+  <nav>
+    <a href="#planner">My Planner</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#tips">Study Tips</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero">
+  <p>MADE FOR FY BTECH CSE STUDENTS</p>
+  <h1>Study smarter, not harder.</h1>
+  <p>
+    Create a personalized study timetable based on your subjects,
+    available time, and learning goals. Track your daily progress
+    and build better study habits.
+  </p>
+  <button onclick="document.getElementById('planner').scrollIntoView({behavior:'smooth'})">
+    Create My Study Plan →
+  </button>
+  <p>
+    Completed tasks: <strong id="doneCount">0</strong>
+    &nbsp; | &nbsp;
+    Planned study time: <strong id="hoursCount">0h</strong>
+  </p>
+</section>
+
+<h2 id="planner">Build Your Personal Study Plan</h2>
+<p class="subtitle">
+  Enter your subjects and preferences to generate your timetable.
+</p>
+
+<section class="layout">
+
+<div class="card">
+  <h3>Study Preferences</h3>
+
+  <label for="studentName">Your Name (optional)</label>
+  <input id="studentName" placeholder="Enter your name">
+
+  <label for="subjectInput">Add Subjects</label>
+  <div class="input-row">
+    <input id="subjectInput" placeholder="e.g. Mathematics-I">
+    <button id="addButton" type="button">Add</button>
+  </div>
+
+  <div class="chips" id="subjectList"></div>
+
+  <div class="two-columns">
+    <div>
+      <label for="hours">Hours Per Day</label>
+      <select id="hours">
+        <option value="1">1 hour</option>
+        <option value="2">2 hours</option>
+        <option value="3" selected>3 hours</option>
+        <option value="4">4 hours</option>
+        <option value="5">5 hours</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="days">Plan Length</label>
+      <select id="days">
+        <option value="5">5 days</option>
+        <option value="7" selected>7 days</option>
+      </select>
+    </div>
+  </div>
+
+  <label for="goal">Learning Goal</label>
+  <select id="goal">
+    <option value="balanced">Balanced Learning</option>
+    <option value="exam">Exam Preparation</option>
+    <option value="practice">Problem-Solving Practice</option>
+    <option value="revision">Revision</option>
+  </select>
+
+  <button id="generateButton" class="full-width">
+    Generate My Study Plan ✦
+  </button>
+
+  <div class="notice">
+    <strong>Project note:</strong> This version generates plans
+    using built-in JavaScript rules. It does not connect to a live
+    AI service. A backend and AI API integration would be needed
+    for genuine AI-generated plans inside this website.
+  </div>
+
+  <p id="message" role="status"></p>
+</div>
+
+<div class="card" id="schedule">
+  <div class="schedule-header">
+    <div>
+      <h3 id="scheduleTitle">Your Study Schedule</h3>
+      <p class="subtitle" id="scheduleSubtitle">
+        Generate a plan to see your daily tasks.
+      </p>
+    </div>
+
+    <select id="daySelect" aria-label="Select day" disabled>
+      <option value="0">Day 1</option>
+    </select>
+  </div>
+
+  <div id="scheduleContent">
+    <p class="subtitle">
+      Add your subjects and click Generate My Study Plan.
+    </p>
+  </div>
+</div>
+
+</section>
+
+<h2 id="tips">Tips for Better Learning</h2>
+
+<section class="tips">
+  <article class="tip">
+    <h3>⏱ Focus Sessions</h3>
+    <p>
+      Study for 25–50 minutes and then take a short break.
+      Avoid distractions during your study session.
+    </p>
+  </article>
+
+  <article class="tip">
+    <h3>✍ Active Practice</h3>
+    <p>
+      Solve numerical problems, write small C programs,
+      and explain concepts in your own words.
+    </p>
+  </article>
+
+  <article class="tip">
+    <h3>↻ Regular Revision</h3>
+    <p>
+      Review previously learned topics and write down
+      questions that you need to ask your teacher.
+    </p>
+  </article>
+</section>
+
+</main>
+
+<footer>
+  StudyMate AI | FY BTech CSE Mini Project
+  <br>
+  Your saved plan is stored in this browser.
+</footer>
+
+<script>
+const STORAGE_KEY = "studymate-planner-v1";
+
+let subjects = [
+  "Mathematics-I",
+  "Engineering Physics",
+  "Programming in C",
+  "Engineering Chemistry"
+];
+
+let plan = [];
+let completed = {};
+let currentDay = 0;
+
+const $ = id => document.getElementById(id);
+
+function showMessage(message) {
+  $("message").textContent = message;
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[character]);
+}
+
+function renderSubjects() {
+  $("subjectList").innerHTML = subjects.map((subject, index) => `
+    <span class="chip">
+      ${escapeHTML(subject)}
+      <button type="button"
+        aria-label="Remove ${escapeHTML(subject)}"
+        onclick="removeSubject(${index})">×</button>
+    </span>
+  `).join("");
+}
+
+function addSubject() {
+  const value = $("subjectInput").value.trim();
+
+  if (!value) {
+    showMessage("Please enter a subject name.");
+    return;
+  }
+
+  if (subjects.some(s => s.toLowerCase() === value.toLowerCase())) {
+    showMessage("This subject has already been added.");
+    return;
+  }
+
+  if (subjects.length >= 10) {
+    showMessage("You can add up to 10 subjects.");
+    return;
+  }
+
+  subjects.push(value);
+  $("subjectInput").value = "";
+
+  renderSubjects();
+  saveData();
+  showMessage("Subject added successfully.");
+}
+
+function removeSubject(index) {
+  if (subjects.length <= 1) {
+    showMessage("Keep at least one subject.");
+    return;
+  }
+
+  subjects.splice(index, 1);
+  renderSubjects();
+  saveData();
+  showMessage("Subject removed.");
+}
+
+function createTask(id, subject, title, detail, minutes, isBreak = false) {
+  return {
+    id,
+    subject,
+    title,
+    detail,
+    minutes,
+    isBreak
+  };
+}
+
+function generatePlan() {
+  const dayCount = Number($("days").value);
+  const hoursPerDay = Number($("hours").value);
+  const totalMinutes = hoursPerDay * 60;
+  const goal = $("goal").value;
+
+  plan = [];
+  completed = {};
+
+  for (let day = 0; day < dayCount; day++) {
+    const breakMinutes = 10;
+    const studyMinutes = totalMinutes - breakMinutes;
+
+    const taskCount = Math.min(
+      subjects.length,
+      hoursPerDay === 1 ? 1 : hoursPerDay === 2 ? 2 : 3
+    );
+
+    const baseMinutes = Math.floor(
+      studyMinutes / (taskCount + 1)
+    );
+
+    const tasks = [];
+
+    for (let i = 0; i < taskCount; i++) {
+      const subject = subjects[(day + i) % subjects.length];
+
+      let title;
+      let detail;
+
+      if (goal === "exam") {
+        title = "Exam Preparation";
+        detail = `Practise exam questions and review important topics in ${subject}.`;
+      } else if (goal === "practice") {
+        title = "Problem-Solving Practice";
+        detail = `Solve 3–5 problems or write a small program related to ${subject}.`;
+      } else if (goal === "revision") {
+        title = "Revision Session";
+        detail = `Review important concepts in ${subject} without looking at your notes.`;
+      } else {
+        const activities = [
+          ["Learn Concepts", `Read and understand important concepts in ${subject}.`],
+          ["Practice Questions", `Solve questions and examples from ${subject}.`],
+          ["Quick Revision", `Revise key points and make short notes for ${subject}.`]
+        ];
+
+        [title, detail] = activities[day % activities.length];
+      }
+
+      tasks.push(createTask(
+        `day${day}task${i}`,
+        subject,
+        title,
+        detail,
+        baseMinutes
+      ));
+    }
+
+    const recapSubject = subjects[
+      (day + taskCount) % subjects.length
+    ];
+
+    tasks.push(createTask(
+      `day${day}recap`,
+      recapSubject,
+      "Daily Recap",
+      `Summarize what you learned in ${recapSubject} and list any doubts.`,
+      studyMinutes - baseMinutes * taskCount
+    ));
+
+    tasks.push(createTask(
+      `day${day}break`,
+      "",
+      "Short Break",
+      "Stretch, drink water, and rest your eyes.",
+      breakMinutes,
+      true
+    ));
+
+    plan.push({ tasks });
+  }
+
+  currentDay = 0;
+
+  $("daySelect").innerHTML = plan.map((item, index) =>
+    `<option value="${index}">Day ${index + 1}</option>`
+  ).join("");
+
+  $("daySelect").disabled = false;
+
+  const name = $("studentName").value.trim();
+
+  $("scheduleTitle").textContent = name
+    ? `${name}'s Study Schedule`
+    : "Your Study Schedule";
+
+  $("scheduleSubtitle").textContent =
+    `${dayCount}-day plan · ${hoursPerDay} hour(s) per day · ${subjects.length} subject(s)`;
+
+  renderSchedule();
+  updateStatistics();
+  saveData();
+
+  showMessage("Your study plan has been generated!");
+}
+
+function renderSchedule() {
+  const day = plan[currentDay];
+
+  if (!day) {
+    $("scheduleContent").innerHTML =
+      '<p class="subtitle">Generate a plan to view your tasks.</p>';
+    return;
+  }
+
+  const studyTasks = day.tasks.filter(task => !task.isBreak);
+
+  const finished = studyTasks.filter(
+    task => completed[task.id]
+  ).length;
+
+  const percentage = Math.round(
+    finished / Math.max(1, studyTasks.length) * 100
+  );
+
+  let html = `
+    <div class="progress">
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <strong>Day ${currentDay + 1} Progress</strong>
+        <span>${finished}/${studyTasks.length} tasks · ${percentage}%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${percentage}%"></div>
+      </div>
+    </div>
+  `;
+
+  for (const task of day.tasks) {
+    const isCompleted = Boolean(completed[task.id]);
+
+    html += `
+      <div class="task ${isCompleted ? "completed" : ""}">
+        ${
+          task.isBreak
+            ? "<span>☕</span>"
+            : `<input type="checkbox"
+                aria-label="Mark ${escapeHTML(task.title)} complete"
+                ${isCompleted ? "checked" : ""}
+                onchange="toggleTask('${task.id}', this.checked)">`
+        }
+
+        <div>
+          <strong>
+            ${escapeHTML(task.title)}
+            ${task.subject ? " · " + escapeHTML(task.subject) : ""}
+          </strong>
+          <div class="task-detail">
+            ${escapeHTML(task.detail)}
+          </div>
+        </div>
+
+        <span class="minutes">${task.minutes} min</span>
+      </div>
+    `;
+  }
+
+  html += `
+    <p style="margin-top:18px">
+      <button type="button" onclick="completeDay()">
+        Complete Study Tasks
+      </button>
+      <button type="button"
+        style="background:#edf0f8;color:#222;margin-top:6px"
+        onclick="resetDay()">
+        Reset Day
+      </button>
+    </p>
+  `;
+
+  $("scheduleContent").innerHTML = html;
+}
+
+function toggleTask(id, value) {
+  completed[id] = value;
+  renderSchedule();
+  updateStatistics();
+  saveData();
+}
+
+function completeDay() {
+  if (!plan[currentDay]) return;
+
+  plan[currentDay].tasks
+    .filter(task => !task.isBreak)
+    .forEach(task => completed[task.id] = true);
+
+  renderSchedule();
+  updateStatistics();
+  saveData();
+  showMessage("All study tasks marked complete!");
+}
+
+function resetDay() {
+  if (!plan[currentDay]) return;
+
+  plan[currentDay].tasks.forEach(task => {
+    delete completed[task.id];
+  });
+
+  renderSchedule();
+  updateStatistics();
+  saveData();
+  showMessage("Daily progress has been reset.");
+}
+
+function updateStatistics() {
+  const allTasks = plan.flatMap(day => day.tasks)
+    .filter(task => !task.isBreak);
+
+  const finished = allTasks.filter(
+    task => completed[task.id]
+  ).length;
+
+  const minutes = allTasks.reduce(
+    (total, task) => total + task.minutes,
+    0
+  );
+
+  $("doneCount").textContent = finished;
+  $("hoursCount").textContent =
+    (minutes / 60).toFixed(1) + "h";
+}
+
+function saveData() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      subjects,
+      plan,
+      completed,
+      currentDay,
+      name: $("studentName").value,
+      hours: $("hours").value,
+      days: $("days").value,
+      goal: $("goal").value
+    }));
+  } catch (error) {
+    showMessage("Browser storage is unavailable.");
+  }
+}
+
+function loadData() {
+  try {
+    const saved = JSON.parse(
+      localStorage.getItem(STORAGE_KEY)
+    );
+
+    if (saved) {
+      if (Array.isArray(saved.subjects) && saved.subjects.length) {
+        subjects = saved.subjects;
+      }
+
+      plan = Array.isArray(saved.plan) ? saved.plan : [];
+      completed = saved.completed || {};
+      currentDay = Math.min(
+        saved.currentDay || 0,
+        Math.max(0, plan.length - 1)
+      );
+
+      $("studentName").value = saved.name || "";
+      $("hours").value = saved.hours || "3";
+      $("days").value = saved.days || "7";
+      $("goal").value = saved.goal || "balanced";
+    }
+  } catch (error) {
+    console.log("No saved plan found.");
+  }
+
+  renderSubjects();
+
+  if (plan.length) {
+    $("daySelect").innerHTML = plan.map((day, index) =>
+      `<option value="${index}">Day ${index + 1}</option>`
+    ).join("");
+
+    $("daySelect").disabled = false;
+    $("daySelect").value = currentDay;
+
+    const name = $("studentName").value.trim();
+
+    $("scheduleTitle").textContent = name
+      ? `${name}'s Study Schedule`
+      : "Your Study Schedule";
+
+    $("scheduleSubtitle").textContent =
+      `${plan.length}-day plan · ${$("hours").value} hour(s) per day`;
+
+    renderSchedule();
+    updateStatistics();
+  }
+}
+
+$("addButton").addEventListener("click", addSubject);
+
+$("subjectInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    addSubject();
+  }
+});
+
+$("generateButton").addEventListener("click", generatePlan);
+
+$("daySelect").addEventListener("change", event => {
+  currentDay = Number(event.target.value);
+  renderSchedule();
+  saveData();
+});
+
+$("studentName").addEventListener("change", () => {
+  if (plan.length) {
+    const name = $("studentName").value.trim();
+
+    $("scheduleTitle").textContent = name
+      ? `${name}'s Study Schedule`
+      : "Your Study Schedule";
+  }
+
+  saveData();
+});
+
+loadData();
+</script>
+
+</body>
+</html>
